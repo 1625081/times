@@ -1,0 +1,72 @@
+<p id="notice"><%= notice %></p>
+
+<div class="ui center aligned raised padded container segment">
+  <h1>空教室数据查询测试</h1>
+  <h2 class="ui header">Import Classroom Data</h2>  
+  <%= form_tag import_rooms_path, multipart: true do %>  
+    <%= file_field_tag :file %>  
+    <%= submit_tag "Import" %>  
+  <% end %>  
+
+  <h3 class="ui header">Search Classroom Data</h3>
+  <div class="ui search">
+    <form action="/">
+      <div class="ui icon input">
+        <input class="prompt" type="text" name="key" value="<%params[:key]%>" placeholder="PleaseSearch......">
+        <i class="search icon"></i>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Class</th>
+      <th>Mon</th>
+      <th>Tue</th>
+      <th>Wed</th>
+      <th>Thr</th>
+      <th>Fri</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody style="color: red">
+    <% @searchrooms.each do |sroom| %>
+      <tr>
+        <td><%= sroom.class_id %></td>
+        <td><%= sroom.mon %></td>
+        <td><%= sroom.tue %></td>
+        <td><%= sroom.wed %></td>
+        <td><%= sroom.thr %></td>
+        <td><%= sroom.fri %></td>
+        <td><%= link_to 'Show', sroom %></td>
+        <td><%= link_to 'Edit', edit_room_path(sroom) %></td>
+        <td><%= link_to 'Destroy', sroom, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+
+  <tbody>
+    <% @rooms.each do |room| %>
+      <tr>
+        <td><%= room.class_id %></td>
+        <td><%= room.mon %></td>
+        <td><%= room.tue %></td>
+        <td><%= room.wed %></td>
+        <td><%= room.thr %></td>
+        <td><%= room.fri %></td>
+        <td><%= link_to 'Show', room %></td>
+        <td><%= link_to 'Edit', edit_room_path(room) %></td>
+        <td><%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Room', new_room_path %>

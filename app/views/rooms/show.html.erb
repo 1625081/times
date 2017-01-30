@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Class:</strong>
+  <%= @room.class_id %>
+</p>
+
+<p>
+  <strong>Mon:</strong>
+  <%= @room.mon %>
+</p>
+
+<p>
+  <strong>Tue:</strong>
+  <%= @room.tue %>
+</p>
+
+<p>
+  <strong>Wed:</strong>
+  <%= @room.wed %>
+</p>
+
+<p>
+  <strong>Thr:</strong>
+  <%= @room.thr %>
+</p>
+
+<p>
+  <strong>Fri:</strong>
+  <%= @room.fri %>
+</p>
+
+<%= link_to 'Edit', edit_room_path(@room) %> |
+<%= link_to 'Back', rooms_path %>
