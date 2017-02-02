@@ -2,11 +2,12 @@
 
 <div class="ui center aligned raised padded container segment">
   <h1>空教室数据查询测试</h1>
-  <h2 class="ui header">Import Classroom Data</h2>  
-  <%= form_tag import_rooms_path, multipart: true do %>  
-    <%= file_field_tag :file %>  
-    <%= submit_tag "Import" %>  
-  <% end %>  
+  <h2 class="ui header">Import Classroom Data</h2>
+  <%= form_tag import_rooms_path, multipart: true do %>
+    <%= file_field_tag :file %>
+    <%# submit_tag "Import" %>
+    <button class="mini ui primary basic button" type="submit">import</button>
+  <% end %>
 
   <h3 class="ui header">Search Classroom Data</h3>
   <div class="ui search">
@@ -16,6 +17,20 @@
         <i class="search icon"></i>
       </div>
     </form>
+  </div>
+  <h4 class="ui horizontal divider header"><i class="bar chart icon"></i>搜索结果</h4>
+  <div class="ui two column divided grid">
+    <% @searchrooms.each do |sroom| %>
+    <div class="row">
+      <div class="column">
+        <h2 class="ui header"><i class="ui calendar icon"></i><%= sroom.class_id %></h2>
+      </div>
+      <div class="column">
+          <h2 class="ui header"><i class="ui wait icon"></i><%= sroom.today %></h2>
+      </div>
+    </div>
+    <div class="ui fitted divider"></div>
+    <% end %>
   </div>
 
 </div>
