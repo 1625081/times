@@ -7,7 +7,11 @@ class RoomsController < ApplicationController
     @rooms = Room.all
     @searchrooms=[]
     if params[:key]
-      @searchrooms=Room.search(params[:key])
+      if (params[:key]=~/星期[一二三四五]/).nil? and [6,0].include? Time.new.wday
+        redirect_to root_url,notice: "周六日的教室情况不用查哦～"
+      else
+        @searchrooms,@descriptions=Room.search(params[:key])
+      end
     end
   end
 
