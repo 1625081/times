@@ -1,9 +1,19 @@
 class Room < ApplicationRecord
 
+# 这是一种仅仅支持新建room的算法，不可以进行更新
+#  def self.import(file)
+#      CSV.foreach(file.path, headers: true) do |row|
+#	      Room.create! row.to_hash
+#	  end
+#  end
+
+#　本方法支持对有错误信息的room进行更新（通过新的CSV数据表）
   def self.import(file)
-      CSV.foreach(file.path, headers: true) do |row|
-	      Room.create! row.to_hash
-	  end
+    CSV.foreach(file.path, headers: true) do |row|
+      room = find_by_id(row["id"]) || new
+      room.attributes = row.to_hash.slice(*row.to_hash.keys)
+      room.save!
+    end
   end
 
   def self.predict(key)#预测教室情况包括：星期几和教室范围
@@ -137,7 +147,7 @@ class Room < ApplicationRecord
     if key.include? "星期"
       @rooms,@strs=Room.predict(key)
       return @rooms,@strs
-    elsif ["6","7"].include? Time.new.wday
+    elsif ["6","0"].include? Time.new.wday
       redirect_to root_path
     else
       Room.all.each do |r|
