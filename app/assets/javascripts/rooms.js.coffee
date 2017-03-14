@@ -24,3 +24,6 @@ $(document).on "turbolinks:load", ->
     () ->
       location.href="https://github.com/1625081/times"
   )
+  
+  $('.ui.dropdown')
+    .dropdown()

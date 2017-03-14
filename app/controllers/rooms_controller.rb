@@ -4,7 +4,7 @@ class RoomsController < ApplicationController
   # GET /rooms
   # GET /rooms.json
   def index
-      
+
   end
 
   def import
@@ -55,7 +55,6 @@ class RoomsController < ApplicationController
         end
       end
     end
-
   end
 
   def more

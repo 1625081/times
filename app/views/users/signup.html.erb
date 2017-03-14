@@ -1,3 +1,4 @@
+<% if current_user %>
 <%= form_for @user do |f| %>
     <dl class="form">
       <dt><%= f.label :name, "用户名" %></dt>
@@ -15,5 +16,8 @@
       <dt><%= f.label :password_confirmation, "请再输入一次" %></dt>
       <dd><%= f.password_field :password_confirmation %></dd>
     </dl>
-    <p><%= f.submit "注册", :class => "ui blue button" %></p>
+    <p><%= f.submit "注册", :class => "ui blue button" %>
+      <%= link_to "登出", logout_path, :class=>"ui red button", method: "delete" %></p>
+<% end %>
+
 <% end %>

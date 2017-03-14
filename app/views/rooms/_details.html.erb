@@ -1,4 +1,4 @@
-<% if !@searchrooms.blank? %>
+<% if !srooms.blank? %>
   <h2 class="ui header">源数据</h2>
     <table class="ui celled table">
       <thead>
@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody style="color: red">
-       <% @searchrooms.each do |sroom| %>
+       <% srooms.each do |sroom| %>
         <tr>
           <td><%= sroom.class_id %></td>
           <td><%= sroom.mon %></td>

@@ -10,7 +10,12 @@ class UsersController < ApplicationController
   end
 
   def login
-    
+
+  end
+
+  def logout
+    session[:user_id] = nil
+    redirect_to :root
   end
 
   def create_login_session

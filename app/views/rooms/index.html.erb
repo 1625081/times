@@ -6,6 +6,25 @@
 
 <% end %>
 
+<div class="ui top fixed inverted menu">
+  <div class="item">
+    <i class="list layout icon"></i>
+  </div>
+  <div class="right menu">
+  <% if current_user %>
+    <a class="item">你好！</a>
+  <% end %>
+    <div class="ui dropdown item">
+          管理员操作
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <a class="item" href="/signup">SignUp</a>
+          <a class="item" href="/login">Login</a>
+        </div>
+    </div>
+  </div>
+</div>
+
 <div class="ui teal inverted center aligned padded segment">
   <div class="ui center aligned header">
   <h1 id="head">空教室数据查询系统</h1>
@@ -23,7 +42,7 @@
   <div class="ui search">
     <form action="/rooms/search" method="post" data-remote="true">
       <div class="ui icon input">
-        <input class="prompt" type="text" name="key" value="<%params[:key]%>" placeholder="PleaseSearch......">
+        <input class="prompt" type="text" name="key" placeholder="PleaseSearch......">
         <i class="search icon"></i>
       </div>
     </form>
@@ -58,12 +77,15 @@
     </div>
     <button class="black ui button" id="instructions">搜索说明</button>
 <br/>
-<div class="results">
-  <%= render partial:'rooms/results',locals:{srooms: @searchrooms,des:@descriptions}%>
-</div>
-<div class="details">
-  <%= render partial:'rooms/details'%>
-</div>
+<% unless current_user %>
+  <div class="results">
+    <%= render partial:'rooms/results',locals:{srooms: @searchrooms,des:@descriptions}%>
+  </div>
+<% else %>
+  <div class="details">
+    <%= render partial:'rooms/details',locals:{srooms: @searchrooms,des:@descriptions}%>
+  </div>
+<% end %>
 
 </div>
 
