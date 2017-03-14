@@ -1,0 +1,20 @@
+<%= form_tag "/create_login_session" do %>
+    <dl class="form">
+      <dt>
+        <%= label_tag "用户名" %>
+      </dt>
+      <dd>
+        <%= text_field_tag :name, params[:name] %>
+      </dd>
+    </dl>
+    <dl class="form">
+      <dt>
+        <%= label_tag "密码" %>
+      </dt>
+      <dd>
+        <%= password_field_tag :password, params[:password] %>
+      </dd>
+    </dl>
+    <p> <%= submit_tag "登录", :class => "ui blue button" %> </p>
+
+<% end %>

@@ -3,75 +3,68 @@
   <i class="close icon"></i>
   <div class="header"><%= v%></div>
 </div>
-<script type="text/JavaScript">
-  $('#flash').fadeOut(3000);
-</script>
+
 <% end %>
 
-<div class="ui center aligned raised padded container segment">
-  <h1>空教室数据查询测试</h1>
+<div class="ui teal inverted center aligned padded segment">
+  <div class="ui center aligned header">
+  <h1 id="head">空教室数据查询系统</h1>
+  <h2>Version 1.0</h2>
+  <% unless 1==1 %>
   <h2 class="ui header">Import Classroom Data</h2>
   <%= form_tag import_rooms_path, multipart: true do %>
     <%= file_field_tag :file %>
     <%= submit_tag "Import" %>
     <%#<button class="mini ui primary basic button" type="submit">import</button>%>
   <% end %>
-
+  <% end %>
+  <img class="ui small circular image" src="/buaa.jpg"></img>
   <h3 class="ui header">Search Classroom Data</h3>
   <div class="ui search">
-    <form action="/">
+    <form action="/rooms/search" method="post" data-remote="true">
       <div class="ui icon input">
         <input class="prompt" type="text" name="key" value="<%params[:key]%>" placeholder="PleaseSearch......">
         <i class="search icon"></i>
       </div>
     </form>
   </div>
-  <% if !@searchrooms.blank? %>
-  <h4 class="ui horizontal divider header"><i class="bar chart icon"></i>搜索结果</h4>
-  <div class="ui two column divided grid">
-    <% @searchrooms.each do |sroom| %>
-    <div class="row">
-      <div class="column">
-        <h3 class="ui header"><i class="ui calendar icon"></i><%= sroom.class_id %></h3>
-      </div>
-      <div class="column">
-          <h3 class="ui header"><i class="ui wait icon"></i><%= @descriptions[@searchrooms.index(sroom)] %></h3>
+<br/>
+    <div class="ui basic modal">
+      <div class="header">去公众号"buaasu"后台留言即可，谢谢支持！</div>
+      <div class="actions">
+        <div class="ui ok green basic inverted button">
+            <i class="checkmark icon"></i>
+                了解
+        </div>
+        <div class="ui project green basic inverted button">
+          <i class="github alternate icon"></i>项目地址
+        </div>
       </div>
     </div>
-    <div class="ui fitted divider"></div>
-    <% end %>
-  </div>
+    <button class="red ui button" id="bug_report">汇报BUG</button>
+    <div class="ui page dimmer" id="instructions_content">
+      <div class="content">
+        <div class="center">
+          <h1>搜索说明：</h1>
+          <div class="description">
+            <h3>1.即时搜索：输入想要自习的教室名称，或者教学楼编号之后，系统会根据当前时间为您推荐最合适的空教室.</h3>
+            <h4>例如:输入"J3"或者""来获取 J3的空教室 或者 全部空教室.</h4>
+            <h3>2.预测搜索：输入想要自习的教室名称，或者教学楼编号+预期的时间之后，系统会根据输入时间为您推荐最合适的空教室.</h3>
+            <h4>例如:输入"星期一 J3"或者"星期三"都会返回对应时间的结果</h4>
+            <h4>*在这个模式下第x节统一指的是第x大节</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="black ui button" id="instructions">搜索说明</button>
+<br/>
+<div class="results">
+  <%= render partial:'rooms/results',locals:{srooms: @searchrooms,des:@descriptions}%>
+</div>
+<div class="details">
+  <%= render partial:'rooms/details'%>
+</div>
 
-  <h2 class="ui header">源数据</h2>
-    <table class="ui celled table">
-      <thead>
-        <tr>
-          <th>Class</th>
-          <th>Mon</th>
-          <th>Tue</th>
-          <th>Wed</th>
-          <th>Thr</th>
-          <th>Fri</th>
-          <th colspan="3" class="right aligned"></th>
-        </tr>
-      </thead>
-      <tbody style="color: red">
-       <% @searchrooms.each do |sroom| %>
-        <tr>
-          <td><%= sroom.class_id %></td>
-          <td><%= sroom.mon %></td>
-          <td><%= sroom.tue %></td>
-          <td><%= sroom.wed %></td>
-          <td><%= sroom.thr %></td>
-          <td><%= sroom.fri %></td>
-          <td class="right aligned"><%= link_to 'Show', sroom %></td>
-          <td class="right aligned"><%= link_to 'Edit', edit_room_path(sroom) %></td>
-          <td class="right aligned"><%= link_to 'Destroy', sroom, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        </tr>
-       <% end %>
-      </tbody>
-    </table>
-  <% end %><%# 搜索结果+数据部分结束 %>
 </div>
 
 <br>

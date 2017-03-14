@@ -4,15 +4,7 @@ class RoomsController < ApplicationController
   # GET /rooms
   # GET /rooms.json
   def index
-    @rooms = Room.all
-    @searchrooms=[]
-    if params[:key]
-      if (params[:key]=~/星期[一二三四五]/).nil? and [6,0].include? Time.new.wday
-        redirect_to root_url,notice: "周六日的教室情况不用查哦～"
-      else
-        @searchrooms,@descriptions=Room.search(params[:key])
-      end
-    end
+      
   end
 
   def import
@@ -50,7 +42,44 @@ class RoomsController < ApplicationController
   end
 
   def search
+    #Room.check()
+    if params[:key]
+      mode,key=Room.keycheck(params[:key])
+      if key.nil?
+        redirect_to root_url,notice: "周六日的教室情况不用查哦～"
+      else
+        key.upcase!
+        @searchrooms,@descriptions=Room.search(mode,key)
+        respond_to do |f|
+          f.js
+        end
+      end
+    end
+
   end
+
+  def more
+    if params[:des] and params[:srooms]
+      @searchrooms=[]
+      #这里是为了让房间和房间描述保持一致
+      if params[:des].split(" ").size >= 10
+        @descriptions=params[:des].split(" ").drop(10)
+        @searchs=params[:srooms].split(" ").drop(10)
+        @searchs.each do |r|
+          @searchrooms<<Room.find(r)
+        end
+      else
+        @descriptions=[]
+        @searchrooms=[]
+      end
+
+      respond_to do |f|
+        f.js
+      end
+
+    end
+  end
+
   # PATCH/PUT /rooms/1
   # PATCH/PUT /rooms/1.json
   def update

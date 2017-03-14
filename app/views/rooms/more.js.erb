@@ -1,0 +1,3 @@
+$('.fluid').hide();
+$('.results').append("<br/>");
+$('.results').append("<%= j render(partial: 'rooms/results',locals:{srooms: @searchrooms,des:@descriptions})%>");
