@@ -1,0 +1,13 @@
+//注意，这里只要写错一点，整个文件的js不会执行
+newhtml="<%= j render(partial: 'rooms/results',locals:{srooms: @searchrooms,des:@descriptions})%>";
+<% if current_user %>
+details="<%= j render(partial:'rooms/details',locals:{srooms: @searchrooms,des:@descriptions})%>";
+$('.details').empty();
+$('.details').append("<br/><h4 class=\"ui horizontal divider header\"><i class=\"bar chart icon\"></i>搜索结果</h4>");
+$('.details').append(details);
+<% else %>
+$('.results').empty();
+//这里不能用replaceWith 想想为什么?
+$('.results').append("<br/><h4 class=\"ui horizontal divider header\"><i class=\"bar chart icon\"></i>搜索结果</h4>");
+$('.results').append(newhtml);
+<% end %>

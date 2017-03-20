@@ -1,0 +1,31 @@
+<% if !srooms.blank? %>
+  <div class="ui two column divided grid">
+  <% srooms.first(10).each do |sroom| %>
+    <div class="row">
+      <div class="column">
+        <h3><a href="info?cid=<%= sroom.class_id%>" class="mini ui grey basic icon button">Info</a>
+          <i class="ui calendar icon"></i><%= sroom.class_id %></h3>
+      </div>
+      <div class="column">
+          <h3 class="ui inverted header"><i class="ui wait icon"></i><%= des[srooms.index(sroom)] %></h3>
+      </div>
+    </div>
+    <div class="ui fitted divider"></div>
+  <% end %>
+  </div>
+  <% @sids=[] %>
+  <% for room in @searchrooms %>
+  <% @sids<<room.id %>
+  <% end %>
+  <%= form_tag more_rooms_path,remote:true do %>
+    <%= hidden_field_tag(:des,@descriptions) %>
+    <%= hidden_field_tag(:srooms,@sids) %>
+    <button type="submit" class="fluid green ui bottom attached button">点击加载更多</button>
+  <% end %>
+  <!--我竟然学会了ctrl+/可以快速注释
+  <form class="ui form" action="/rooms/more" method="post" data-remote="true">
+    <input type="hidden" name="srooms" value="<%= srooms %>"></input>
+    <input type="hidden" name="des" value="<%= des %>"></input>
+    <button type="submit" class="fluid ui bottom attached button">点击加载更多</button>
+  </form> -->
+<% end %>

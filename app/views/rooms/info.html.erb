@@ -1,0 +1,23 @@
+<div class="ui equal width center aligned padded grid">
+  <div class="row">
+    <div class="blue column"><%=@room.class_id%></div>
+  </div>
+  <div class="row">
+    <div class="blue column">星期一 </div>
+    <div class="blue column">星期二 </div>
+    <div class="blue column">星期三 </div>
+    <div class="blue column">星期四 </div>
+    <div class="blue column">星期五 </div>
+  </div>
+  <% for i in 0..5%>
+  <div class="row">
+    <% for s in 0..4%>
+      <% if @column[i][s]=="1" %>
+        <div class="grey column">有课 </div>
+      <%elsif @column[i][s]=="0"%>
+        <div class="column">没课 </div>
+      <%end%>
+    <%end%>
+  </div>
+  <% end %>
+</div>
