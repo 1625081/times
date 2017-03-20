@@ -79,6 +79,28 @@ class RoomsController < ApplicationController
     end
   end
 
+  def info
+    dic={1=>"mon",2=>"tue",3=>"wed",4=>"thr",5=>"fri"}
+    @column=[]#按列进行计数
+    if params[:cid]
+      @room=Room.find_by_class_id(params[:cid])
+      for j in 1..6
+        str=""
+        for i in 1..5
+          day=eval('@room.'+dic[i])
+          if day.include? j.to_s
+            str<<"1"
+          else
+            str<<"0"
+          end
+        end
+        @column<<str
+      end
+    else
+      redirect_to root_url
+    end
+  end
+
   # PATCH/PUT /rooms/1
   # PATCH/PUT /rooms/1.json
   def update

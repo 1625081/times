@@ -1,15 +1,16 @@
 <% if !srooms.blank? %>
   <div class="ui two column divided grid">
   <% srooms.first(10).each do |sroom| %>
-  <div class="row">
-    <div class="column">
-      <h3 class="ui inverted header"><i class="ui calendar icon"></i><%= sroom.class_id %></h3>
+    <div class="row">
+      <div class="column">
+        <h3><a href="info?cid=<%= sroom.class_id%>" class="mini ui grey basic icon button">Info</a>
+          <i class="ui calendar icon"></i><%= sroom.class_id %></h3>
+      </div>
+      <div class="column">
+          <h3 class="ui inverted header"><i class="ui wait icon"></i><%= des[srooms.index(sroom)] %></h3>
+      </div>
     </div>
-    <div class="column">
-        <h3 class="ui inverted header"><i class="ui wait icon"></i><%= des[srooms.index(sroom)] %></h3>
-    </div>
-  </div>
-  <div class="ui fitted divider"></div>
+    <div class="ui fitted divider"></div>
   <% end %>
   </div>
   <% @sids=[] %>

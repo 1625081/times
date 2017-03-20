@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   end
   root to: 'rooms#index'
   get '/' => 'rooms#index',format: true
-
+  get '/info' => 'rooms#info'
   get "signup" => "users#signup", :as => "signup"
   get "login" => "users#login", :as => "login"
   delete "logout" => "users#logout", :as => "logout"
