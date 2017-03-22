@@ -88,6 +88,7 @@ class RoomsController < ApplicationController
         str=""
         for i in 1..5
           day=eval('@room.'+dic[i])
+          day||=""
           if day.include? j.to_s
             str<<"1"
           else
