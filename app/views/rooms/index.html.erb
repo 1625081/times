@@ -26,24 +26,23 @@
 </div>
 
 <div class="ui teal inverted center aligned padded segment">
-  <div class="ui center aligned header">
   <h1 id="head">空教室数据查询系统</h1>
   <h2>Version 1.0</h2>
   <% if current_user %>
-  <h2 class="ui header">Import Classroom Data</h2>
-  <%= form_tag import_rooms_path, multipart: true do %>
-    <%= file_field_tag :file %>
-    <%= submit_tag "Import" %>
+    <h2 class="ui header">Import Classroom Data</h2>
+    <%= form_tag import_rooms_path, multipart: true do %>
+      <%= file_field_tag :file %>
+      <%= submit_tag "Import" %>
     <%#<button class="mini ui primary basic button" type="submit">import</button>%>
+    <% end %>
   <% end %>
-  <% end %>
-  <img class="ui small circular image" src="/buaa.jpg"></img>
+  <img class="ui small circular image" src="/buaa.jpg" style="display:inline-block;"></img>
   <h3 class="ui header">Search Classroom Data</h3>
   <div class="ui search">
-    <form action="/rooms/search" method="post" data-remote="true">
+    <form id="main_form" action="/rooms/search" method="post" data-remote="true">
       <div class="ui icon input">
         <input class="prompt" type="text" name="key" placeholder="PleaseSearch......">
-        <i class="search icon"></i>
+        <i class="search link icon" id="form_commit" ></i>
       </div>
     </form>
   </div>

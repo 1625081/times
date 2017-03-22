@@ -20,10 +20,16 @@ $(document).on "turbolinks:load", ->
       $('.basic.modal').modal('show')
   )
 
+  $('#form_commit').click (
+    () ->
+      $('#main_form').submit()
+
+  )
+
   $('.project').click (
     () ->
       location.href="https://github.com/1625081/times"
   )
-  
+
   $('.ui.dropdown')
     .dropdown()
