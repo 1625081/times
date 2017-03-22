@@ -29,7 +29,7 @@
   <div class="ui center aligned header">
   <h1 id="head">空教室数据查询系统</h1>
   <h2>Version 1.0</h2>
-  <% if current_user  %>
+  <% if current_user %>
   <h2 class="ui header">Import Classroom Data</h2>
   <%= form_tag import_rooms_path, multipart: true do %>
     <%= file_field_tag :file %>
