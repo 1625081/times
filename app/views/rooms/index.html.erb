@@ -20,6 +20,7 @@
         <div class="menu">
           <a class="item" href="/signup">SignUp</a>
           <a class="item" href="/login">Login</a>
+          <%= link_to "logout",logout_path, class: "item", method: "delete" %>
         </div>
     </div>
   </div>
@@ -36,7 +37,7 @@
     <%#<button class="mini ui primary basic button" type="submit">import</button>%>
     <% end %>
   <% end %>
-  <img class="ui small circular image" src="/buaa.jpg" style="display:inline-block;"></img>
+  <img class="ui small circular image" src="http://ofnfnmmn0.bkt.clouddn.com/buaa.jpg" style="display:inline-block;"></img>
   <h3 class="ui header">Search Classroom Data</h3>
   <div class="ui search">
     <form id="main_form" action="/rooms/search" method="post" data-remote="true">
