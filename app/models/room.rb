@@ -1,7 +1,7 @@
 class Room < ApplicationRecord
 
   @@dict=Hash.new {'noinfo'}
-  @@dict={1=>"mon",2=>"tue",3=>"wed",4=>"thr",5=>"fri",6=>"mon",7=>"mon"}
+  @@dict={1=>"mon",2=>"tue",3=>"wed",4=>"thr",5=>"fri"}
   @@dict2={"12"=>"上午","34"=>"下午","56"=>"晚上"}
 # 这是一种仅仅支持新建room的算法，不可以进行更新
 #  def self.import(file)
@@ -41,11 +41,11 @@ class Room < ApplicationRecord
       # end
       # key2||=""
       # return key1,key2
-    #  if [6,0].include? Time.new.wday
-    #    return nil,nil
-    #  else
+     if [6,0].include? Time.new.wday
+       return nil,nil
+     else
       return "now",key
-    #  end
+     end
   end
 
   def match
