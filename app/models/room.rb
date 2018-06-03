@@ -41,7 +41,7 @@ class Room < ApplicationRecord
       # end
       # key2||=""
       # return key1,key2
-     if [6,0].include? Time.new.wday
+     if [6,-1].include? Time.new.wday
        return nil,nil
      else
       return "now",key
