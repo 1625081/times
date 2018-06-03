@@ -9,13 +9,28 @@ class Room < ApplicationRecord
 #	      Room.create! row.to_hash
 #	  end
 #  end
-#　本方法支持对有错误信息的room进行更新（通过新的CSV数据表）
+#　J's code 1.0
   def self.import(file)
-    CSV.foreach(file.path, headers: true) do |row|
-      room = find_by_id(row["id"]) || new
-      room.attributes = row.to_hash.slice(*row.to_hash.keys)
-      room.save!
-    end
+    hash=ActiveSupport::JSON.decode(File.read(file.open))
+    hash.each { |classid,xingqi|
+        help={}
+        xingqi.each{ |xingqi,part|
+          str=""
+          part.each { |part,value|
+            str=str+value.delete('\"')+','
+          }
+          str.chop!
+          help[xingqi]=str
+        }
+        @room=Room.new
+        @room.class_id=classid
+        @room.mon=help["Mon"]
+        @room.tue=help["Tues"]
+        @room.wed=help["Wed"]
+        @room.thr=help["Thur"]
+        @room.fri=help["Fir"]
+        @room.save!
+    }
   end
 
 
