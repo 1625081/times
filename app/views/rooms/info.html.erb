@@ -1,9 +1,9 @@
 <div class="ui equal width center aligned padded grid">
   <div class="row">
 
-    <div class="blue column"><a href="info?cid=<%=@room.class_id%>&week=<%=@a-1%>"><button class="ui blue button">上一周</button></a></div>
+    <div class="blue column"><% if @a>1 %><button class="ui blue button" onclick="window.location.href='info?cid=<%=@room.class_id%>&week=<%=@a-1%>'">上一周</button><% end %></div>
     <div class="blue column">第&nbsp;<font color="#99e0ff" size=5><%=@a%></font>&nbsp;周</div>
-    <div class="blue column"><a href="info?cid=<%=@room.class_id%>&week=<%=@a+1%>"><button class="ui blue button">下一周</button></a></div><br>
+    <div class="blue column"><% if @a<18 %><button class="ui blue button" onclick="window.location.href='info?cid=<%=@room.class_id%>&week=<%=@a+1%>'">下一周</button><% end %></div><br>
   </div>
     <div class="blue column"><%=@room.class_id%></div>
 
