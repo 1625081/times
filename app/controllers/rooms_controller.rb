@@ -45,17 +45,15 @@ class RoomsController < ApplicationController
     #Room.check()
     if params[:key]
       mode,key=Room.keycheck(params[:key])
-      if key.nil?
-        redirect_to root_url,notice: "周六日的教室情况不用查哦～"
-      else
+      if !key.nil?
         key.upcase!
+      end
         @searchrooms,@descriptions=Room.search(mode,key)
         respond_to do |f|
           f.js
         end
       end
     end
-  end
 
   def more
     if params[:des] and params[:srooms]
@@ -82,20 +80,53 @@ class RoomsController < ApplicationController
   def info
     dic={1=>"mon",2=>"tue",3=>"wed",4=>"thr",5=>"fri"}
     @column=[]#按列进行计数
-    if params[:cid]
+    if !params[:week]
       @room=Room.find_by_class_id(params[:cid])
-      for j in 1..6
-        str=""
-        for i in 1..5
-          day=eval('@room.'+dic[i])
-          day||=""
-          if day.include? j.to_s
-            str<<"1"
-          else
-            str<<"0"
-          end
+      @a=10
+      # for j in 1..6
+      #   str=""
+      #   for i in 1..5
+      #     day=eval('@room.'+dic[i])
+      #     day||=""
+      #     if day.include? j.to_s
+      #       str<<"1"
+      #     else
+      #       str<<"0"
+      #     end
+      #   end
+      #   @column<<str
+      # end
+      for i in 1..5
+        day=eval('@room.'+dic[i])
+        day||=""
+        day.split(',').each do |d|
+          str=""
+          d.each_byte do |a|
+             str<<a
+           end
+           @column<<str
         end
-        @column<<str
+      end
+    elsif params[:cid] and params[:week]
+      @room=Room.find_by_class_id(params[:cid])
+      tmp=Integer(params[:week])
+      if tmp > 0 and tmp <= 18
+        @a=tmp
+      elsif tmp == 0
+        @a=tmp+1
+      else
+        @a=tmp-1
+      end
+      for i in 1..5
+        day=eval('@room.'+dic[i])
+        day||=""
+        day.split(',').each do |d|
+          str=""
+          d.each_byte do |a|
+             str<<a
+           end
+           @column<<str
+        end
       end
     else
       redirect_to root_url

@@ -56,8 +56,8 @@ class Room < ApplicationRecord
       # end
       # key2||=""
       # return key1,key2
-     if [6,-1].include? Time.new.wday
-       return nil,nil
+     if [6,0].include? Time.new.wday
+       return nil,key
      else
       return "now",key
      end
@@ -119,23 +119,46 @@ class Room < ApplicationRecord
     @room3.sort_by!{|e| e.class_id}
     return @room0+@room1+@room2+@room3
   end
-
+  def self.sort2(rooms)
+    @room0=[]
+    @room1=[]
+    @room2=[]
+    @room3=[]
+    rooms.each do |r|
+      if r.class_id.include? 'J3'
+        @room0<<r
+      elsif r.class_id.include? 'J4'
+        @room1<<r
+      elsif r.class_id.include? 'J5'
+        @room2<<r
+      else
+        @room3<<r
+      end
+    end
+    @room0.sort_by!{|e| e.class_id}
+    @room1.sort_by!{|e| e.class_id}
+    @room2.sort_by!{|e| e.class_id}
+    @room3.sort_by!{|e| e.class_id}
+    return @room0+@room1+@room2+@room3
+  end
   def self.search(mode,key)
   	@rooms=[]
     @strs=[]
     # if (mode=~/周|星期/).is_a?(Fixnum)
       # @rooms,@strs=Room.predict(mode,key)
       # return @rooms,@strs
-    if mode=="now"
       Room.all.each do |r|
   		  if (r.class_id.include? key)
           @rooms<<r
   		  end
    	  end
-    end
+  if mode=="now"
     @rooms=Room.resort(@rooms)
+  else
+    @room=Room.sort2(@rooms)
+  end
     @rooms.each do |r|
-      @strs<<r.match
+      @strs<<"未知"
     end
     return @rooms,@strs
   end

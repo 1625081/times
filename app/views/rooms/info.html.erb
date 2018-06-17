@@ -1,7 +1,12 @@
 <div class="ui equal width center aligned padded grid">
   <div class="row">
-    <div class="blue column"><%=@room.class_id%></div>
+
+    <div class="blue column"><a href="info?cid=<%=@room.class_id%>&week=<%=@a-1%>"><button class="ui blue button">上一周</button></a></div>
+    <div class="blue column">第&nbsp;<font color="#99e0ff" size=5><%=@a%></font>&nbsp;周</div>
+    <div class="blue column"><a href="info?cid=<%=@room.class_id%>&week=<%=@a+1%>"><button class="ui blue button">下一周</button></a></div><br>
   </div>
+    <div class="blue column"><%=@room.class_id%></div>
+
   <div class="row">
     <div class="blue column">星期一 </div>
     <div class="blue column">星期二 </div>
@@ -12,9 +17,9 @@
   <% for i in 0..5%>
   <div class="row">
     <% for s in 0..4%>
-      <% if @column[i][s]=="1" %>
+      <% if @column[s+i*5][@a]=="1" %>
         <div class="grey column">有课 </div>
-      <%elsif @column[i][s]=="0"%>
+      <%elsif @column[s+i*5][@a]=="0"%>
         <div class="column">没课 </div>
       <%end%>
     <%end%>
