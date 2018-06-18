@@ -2,7 +2,7 @@ class Room < ApplicationRecord
 
   @@dict=Hash.new {'noinfo'}
   @@dict={1=>"mon",2=>"tue",3=>"wed",4=>"thr",5=>"fri"}
-  @@dict2={"12"=>"上午","34"=>"下午","56"=>"晚上"}
+  @@dict1={1=>"第一",2=>"第二",3=>"第三",4=>"第四",5=>"第五",6=>"第六"}
 # 这是一种仅仅支持新建room的算法，不可以进行更新
 #  def self.import(file)
 #      CSV.foreach(file.path, headers: true) do |row|
@@ -64,60 +64,77 @@ class Room < ApplicationRecord
   end
 
   def match
-    h=Time.new.hour
-    if h<12
-      str="12"
-      #早上
-    elsif h<18
-      str="34"
-      #下午
+    @first_week=9
+    @week=Time.new.strftime('%U').to_i-@first_week
+    @h=Time.new.hour
+    @min=Time.new.min
+    if @h<10
+      @part=1#第一大节10.00
+    elsif @h<12
+      @part=2#第二大节12.00
+    elsif @h<15||(@h==15&&@min<20)
+      @part=3#第三大节15.20
+    elsif @h<17||(@h==17&&@min<20)
+      @part=4
+    elsif @h<20
+      @part=5
     else
-      str="56"
-      #晚上
+      @part=6
     end
-    if eval('self.'+@@dict[Time.new.wday]).nil?
-      return "全天空闲"
-    elsif ((eval('self.'+@@dict[Time.new.wday]))=~/["#{str}"]/).nil?
-      return @@dict2["#{str}"]+"空闲"
-    elsif eval('self.'+@@dict[Time.new.wday]).include? str
-      return @@dict2["#{str}"]+"满课"
-    elsif eval('self.'+@@dict[Time.new.wday]).include? str[0]
-      return "第"+str[1]+"节空闲"
-    elsif eval('self.'+@@dict[Time.new.wday]).include? str[1]
-      return "第"+str[0]+"节空闲"
-    end
-
-  end
-
-  def self.resort(rooms)#按照时间点和教室id排序
-    h=Time.new.hour
-    if h<12
-      str="12"#早上
-    elsif h<18
-      str="34"#下午
-    else
-      str="56"#晚上
-    end
-    @room0=[]#接受全天空闲教室
-    @room1=[]#接受时间段内全空闲教室
-    @room2=[]#有空闲教室
-    @room3=[]#无空闲教室
-    rooms.each do |r|
-      if eval('r.'+@@dict[Time.new.wday]).nil?
-        @room0<<r #上述代码周六日测试时会有bug
-      elsif ((eval('r.'+@@dict[Time.new.wday]))=~/["#{str}"]/).nil?
-        @room1=@room1<<r
-      elsif eval('r.'+@@dict[Time.new.wday]).include? str
-        @room3=@room3<<r
+    des=""#装返回的描述信息
+    str=eval("self."+@@dict[Time.new.wday])
+    str1=str.split(',')
+    while @part<=6
+      if str1[@part-1][@week]=='0'
+        des+=@@dict1[@part]
+        @part+=1
       else
-        @room2<<r
+        break
       end
     end
-    @room0.sort_by!{|e| e.class_id}
-    @room1.sort_by!{|e| e.class_id}
-    @room2.sort_by!{|e| e.class_id}
-    @room3.sort_by!{|e| e.class_id}
-    return @room0+@room1+@room2+@room3
+      des+="大节空闲"
+    return des
+  end
+
+  def self.resort(rooms)#按照时间点和教室id排序，满足空闲度高的教室优先,rooms里面是模型的每一个实例
+    #要计算出当前的周数
+    @first_week=9
+    @week=Time.new.strftime('%U').to_i-@first_week
+    @h=Time.new.hour
+    @min=Time.new.min
+    @day=Time.new.wday#表示星期,0是星期天
+    if @h<10
+      @part=1#第一大节10.00
+    elsif @h<12
+      @part=2#第二大节12.00
+    elsif @h<15||(@h==15 && @min<20)
+      @part=3#第三大节15.20
+    elsif @h<17||(@h==17 && @min<20)
+      @part=4
+    elsif @h<20
+      @part=5
+    else
+      @part=6
+    end
+    @dict2={}
+    @dict2[0]=[]#表示仅当前课有空
+    @dict2[1]=[]#后面1节有空
+    @dict2[2]=[]
+    @dict2[3]=[]
+    @dict2[4]=[]
+    @dict2[5]=[]
+    rooms.each do |r|
+      str=eval("r."+@@dict[@day])
+      str1=str.split(',')
+      if str1[@part-1][@week] == '0'#当前大节为空教室
+        i=0
+        while @part+i<=5 and str1[@part+i][@week]=='0'#数数，一共有多少的空节，来决定优先度
+            i+=1
+        end
+        @dict2[i]<<r
+      end
+    end
+    return @dict2[5]+@dict2[4]+@dict2[3]+@dict2[2]+@dict2[1]+@dict2[0]
   end
 
   def self.search(mode,key)
@@ -128,16 +145,15 @@ class Room < ApplicationRecord
       # return @rooms,@strs
     if mode=="now"
       Room.all.each do |r|
-  		  if (r.class_id.include? key)
+  		  if r.class_id.include? key
           @rooms<<r
   		  end
    	  end
     end
-    @rooms=Room.resort(@rooms)
+    @rooms=Room.resort(@rooms)#week代表当前的周数
     @rooms.each do |r|
       @strs<<r.match
     end
-    return @rooms,@strs
+    return @rooms,@strs#rooms数组需要存放空闲的教室，strs数组存放对应教室的空闲课数
   end
-
 end
