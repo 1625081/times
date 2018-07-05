@@ -82,20 +82,7 @@ class RoomsController < ApplicationController
     @column=[]#按列进行计数
     if !params[:week]
       @room=Room.find_by_class_id(params[:cid])
-      @a=10
-      # for j in 1..6
-      #   str=""
-      #   for i in 1..5
-      #     day=eval('@room.'+dic[i])
-      #     day||=""
-      #     if day.include? j.to_s
-      #       str<<"1"
-      #     else
-      #       str<<"0"
-      #     end
-      #   end
-      #   @column<<str
-      # end
+      @week=10
       for i in 1..5
         day=eval('@room.'+dic[i])
         day||=""
@@ -109,14 +96,7 @@ class RoomsController < ApplicationController
       end
     elsif params[:cid] and params[:week]
       @room=Room.find_by_class_id(params[:cid])
-      tmp=Integer(params[:week])
-      if tmp > 0 and tmp <= 18
-        @a=tmp
-      elsif tmp == 0
-        @a=tmp+1
-      else
-        @a=tmp-1
-      end
+      @week=Integer(params[:week])
       for i in 1..5
         day=eval('@room.'+dic[i])
         day||=""
