@@ -82,7 +82,8 @@ class RoomsController < ApplicationController
     @column=[]#按列进行计数
     if !params[:week]
       @room=Room.find_by_class_id(params[:cid])
-      @week=10
+      @first_week=9
+      @week=Time.new.strftime('%U').to_i-@first_week
       for i in 1..5
         day=eval('@room.'+dic[i])
         day||=""

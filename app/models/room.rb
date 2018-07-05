@@ -57,7 +57,7 @@ class Room < ApplicationRecord
       # key2||=""
       # return key1,key2
      if [6,0].include? Time.new.wday
-       return nil,key
+       return nil,nil
      else
       return "now",key
      end
@@ -136,30 +136,14 @@ class Room < ApplicationRecord
     end
     return @dict2[5]+@dict2[4]+@dict2[3]+@dict2[2]+@dict2[1]+@dict2[0]
   end
-  def self.sort2(rooms)
-    @room0=[]
-    @room1=[]
-    @room2=[]
-    @room3=[]
-    rooms.each do |r|
-      if r.class_id.include? 'J3'
-        @room0<<r
-      elsif r.class_id.include? 'J4'
-        @room1<<r
-      elsif r.class_id.include? 'J5'
-        @room2<<r
-      else
-        @room3<<r
-      end
-    end
-    return @room0+@room1+@room2+@room3
-  end
+
   def self.search(mode,key)
   	@rooms=[]
     @strs=[]
     # if (mode=~/周|星期/).is_a?(Fixnum)
       # @rooms,@strs=Room.predict(mode,key)
       # return @rooms,@strs
+    if mode=="now"
       Room.all.each do |r|
   		  if r.class_id.include? key
           @rooms<<r
@@ -172,3 +156,4 @@ class Room < ApplicationRecord
     end
     return @rooms,@strs#rooms数组需要存放空闲的教室，strs数组存放对应教室的空闲课数
   end
+end
