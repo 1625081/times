@@ -18,9 +18,9 @@
   <div class="row">
     <% for s in 0..4%>
     <%# test %>
-      <% if @column[s*6+i][@week]=="1" %>
+      <% if @column[s+i*5][@week]=="1" %>
         <div class="grey column">有课 </div>
-      <%elsif @column[s*6+i][@week]=="0"%>
+      <%elsif @column[s+i*5][@week]=="0"%>
         <div class="column">没课 </div>
       <%end%>
     <%end%>
